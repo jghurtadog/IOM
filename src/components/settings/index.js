@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text, Image } from "react-native";
-import Header from "./_children/Header";
-import LastUpdate from "./_children/LastUpdate";
+import Header from "../global/_children/Header";
+import LastUpdate from "../global/_children/LastUpdate";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import Geolocation from "@react-native-community/geolocation";
 

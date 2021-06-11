@@ -7,9 +7,9 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import Header from "./_children/Header";
+import Header from "../global/_children/Header";
+import { ItemLink } from "../global/_children/Card";
 import FilterLink from "./_children/FilterLink";
-import { ItemLink } from "./_children/Card";
 
 const Links = (props) => {
   const [showFilterOption, setShowFilterOption] = useState(false);

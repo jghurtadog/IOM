@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -7,15 +7,28 @@ import {
   StyleSheet,
   TouchableHighlight,
   TouchableOpacity,
-} from 'react-native';
+} from "react-native";
+import { firebase } from "../../../firebase/config";
+import { useSelector, useDispatch } from "react-redux";
+import { addnote, deletenote } from '../../../actions/noteActions'
 
-const LoginForm = props => {
+const LoginForm = (props) => {
+  const dispatch = useDispatch();
+  const notes = useSelector((state) => state);
+  const addNote = (note) => dispatch(addnote(note));
+
+  console.log("notes", notes);
   const onPressRegistre = () => {
-    props.navigation.navigate('Registre');
+    props.navigation.navigate("Registre");
   };
 
+  const note = {
+    text: "prueba"
+  }
+
   const onPressLogin = () => {
-    props.navigation.navigate('Home');
+    
+    addNote(note);
   };
 
   return (
@@ -47,7 +60,7 @@ const LoginForm = props => {
             <View>
               <TouchableOpacity style={styles.btnSocialAccountGoogle}>
                 <Image
-                  source={require('../../../resources/images/GoogleIcon.png')}
+                  source={require("../../../resources/images/GoogleIcon.png")}
                 />
                 <Text style={styles.labelSocial}>Google</Text>
               </TouchableOpacity>
@@ -55,7 +68,7 @@ const LoginForm = props => {
             <View>
               <TouchableOpacity style={styles.btnSocialAccountFacebook}>
                 <Image
-                  source={require('../../../resources/images/FacebookIcon.png')}
+                  source={require("../../../resources/images/FacebookIcon.png")}
                 />
                 <Text style={styles.labelSocial}>Facebook</Text>
               </TouchableOpacity>
@@ -69,63 +82,63 @@ const LoginForm = props => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#FFFFFF',
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#FFFFFF",
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
   },
   labelInicio: {
     fontSize: 22,
-    fontFamily: 'Dosis',
-    fontWeight: '500',
+    fontFamily: "Dosis",
+    fontWeight: "500",
     lineHeight: 28,
     letterSpacing: 0.0015,
-    textAlign: 'center',
-    color: '#003031',
+    textAlign: "center",
+    color: "#003031",
     marginTop: 24,
     marginBottom: 32,
   },
   labelAccount: {
     fontSize: 16,
-    fontWeight: 'normal',
+    fontWeight: "normal",
     lineHeight: 19,
     letterSpacing: 0.005,
-    textAlign: 'center',
-    color: '#003031',
+    textAlign: "center",
+    color: "#003031",
   },
   labelForgetPassword: {
     fontSize: 16,
     lineHeight: 19,
     letterSpacing: 0.005,
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
     marginBottom: 32,
   },
   labelIngresa: {
-    textAlign: 'center',
-    color: '#003031',
+    textAlign: "center",
+    color: "#003031",
     fontSize: 16,
-    fontWeight: 'normal',
+    fontWeight: "normal",
     lineHeight: 19,
     letterSpacing: 0.005,
     marginLeft: 8,
     marginBottom: 16,
   },
   labelLogin: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     lineHeight: 18,
     letterSpacing: 0.00125,
-    textAlign: 'center',
+    textAlign: "center",
     paddingVertical: 12,
   },
   labelSocial: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     lineHeight: 18,
     letterSpacing: 0.00125,
-    textAlign: 'center',
+    textAlign: "center",
     paddingVertical: 12,
     paddingLeft: 5,
   },
@@ -135,23 +148,23 @@ const styles = StyleSheet.create({
   },
   inputTextBox: {
     height: 56,
-    borderColor: '#A1AAB2',
-    fontFamily: 'Roboto',
+    borderColor: "#A1AAB2",
+    fontFamily: "Roboto",
     borderRadius: 3.5,
     paddingLeft: 15,
     borderWidth: 1,
     marginBottom: 29,
   },
   btnIniciar: {
-    backgroundColor: '#132A3E',
+    backgroundColor: "#132A3E",
     height: 42,
     borderRadius: 25,
     marginBottom: 24,
   },
   btnSocialAccountGoogle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderColor: '#A1AAB2',
+    flexDirection: "row",
+    alignItems: "center",
+    borderColor: "#A1AAB2",
     paddingHorizontal: 50,
     borderWidth: 1,
     height: 42,
@@ -159,9 +172,9 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   btnSocialAccountFacebook: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderColor: '#A1AAB2',
+    flexDirection: "row",
+    alignItems: "center",
+    borderColor: "#A1AAB2",
     paddingHorizontal: 45,
     borderWidth: 1,
     height: 42,
@@ -170,21 +183,21 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   noCuenta: {
-    flexDirection: 'row',
-    alignSelf: 'center',
-    alignItems: 'flex-end',
+    flexDirection: "row",
+    alignSelf: "center",
+    alignItems: "flex-end",
     marginBottom: 32,
   },
   containerSocial: {
-    flexDirection: 'row',
-    alignSelf: 'center',
-    alignItems: 'flex-end',
+    flexDirection: "row",
+    alignSelf: "center",
+    alignItems: "flex-end",
     marginBottom: 32,
   },
   labelRegistrate: {
-    color: '#FEC800',
+    color: "#FEC800",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     lineHeight: 19,
     letterSpacing: 0.005,
     marginLeft: 8,
