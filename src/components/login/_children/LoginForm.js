@@ -1,76 +1,91 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
   Image,
   TextInput,
-  StyleSheet,
   TouchableHighlight,
   TouchableOpacity,
 } from "react-native";
-import { firebase } from "../../../firebase/config";
-import { useSelector, useDispatch } from "react-redux";
-import { addnote, deletenote } from '../../../actions/noteActions'
+import AuthContext from "../../../../context/auth/authContext";
+import { validateEmail } from "../../../utilities/helpers";
+import Styles from "./styles";
 
 const LoginForm = (props) => {
-  const dispatch = useDispatch();
-  const notes = useSelector((state) => state);
-  const addNote = (note) => dispatch(addnote(note));
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+  const { auth, message, signIn, user: userData } = useContext(AuthContext);
 
-  console.log("notes", notes);
   const onPressRegistre = () => {
     props.navigation.navigate("Registre");
   };
 
-  const note = {
-    text: "prueba"
-  }
+  useEffect(() => {
+    if (auth) {
+      props.navigation.navigate("Home");
+    }
+  }, [auth]);
+
+  console.log("user", user);
+  console.log("auth", auth);
+
+  const { email, password } = user;
 
   const onPressLogin = () => {
-    
-    addNote(note);
+    //console.log(validateEmail(email));
+    if (!validateEmail(email) || password.length < 8) {
+    } else {
+      signIn(user);
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.labelInicio}>Inicia sesión</Text>
-      <View style={styles.containerForm}>
+    <View style={Styles.container}>
+      <Text style={Styles.labelInicio}>Inicia sesión</Text>
+      <View style={Styles.containerForm}>
         <TextInput
-          style={styles.inputTextBox}
+          style={Styles.inputTextBox}
           placeholder="Correo electrónico"
+          onChangeText={(e) => setUser({ ...user, email: e })}
         />
-        <TextInput style={styles.inputTextBox} placeholder="Contraseña" />
-        <Text style={styles.labelForgetPassword}>
+        <TextInput
+          style={Styles.inputTextBox}
+          placeholder="Contraseña"
+          onChangeText={(e) => setUser({ ...user, password: e })}
+        />
+        <Text style={Styles.labelForgetPassword}>
           ¿Olvidaste tu contraseña?
         </Text>
         <View>
-          <TouchableHighlight style={styles.btnIniciar} onPress={onPressLogin}>
-            <Text style={styles.labelLogin}>Iniciar sesión</Text>
+          <TouchableHighlight style={Styles.btnIniciar} onPress={onPressLogin}>
+            <Text style={Styles.labelLogin}>Iniciar sesión</Text>
           </TouchableHighlight>
         </View>
-        <View style={styles.noCuenta}>
-          <Text style={styles.labelAccount}>¿No tienes una cuenta? </Text>
+        <View style={Styles.noCuenta}>
+          <Text style={Styles.labelAccount}>¿No tienes una cuenta? </Text>
           <TouchableOpacity onPress={onPressRegistre}>
-            <Text style={styles.labelRegistrate}>Regístrate</Text>
+            <Text style={Styles.labelRegistrate}>Regístrate</Text>
           </TouchableOpacity>
         </View>
         <View>
-          <Text style={styles.labelIngresa}>O ingresa con:</Text>
-          <View style={styles.containerSocial}>
+          <Text style={Styles.labelIngresa}>O ingresa con:</Text>
+          <View style={Styles.containerSocial}>
             <View>
-              <TouchableOpacity style={styles.btnSocialAccountGoogle}>
+              <TouchableOpacity style={Styles.btnSocialAccountGoogle}>
                 <Image
                   source={require("../../../resources/images/GoogleIcon.png")}
                 />
-                <Text style={styles.labelSocial}>Google</Text>
+                <Text style={Styles.labelSocial}>Google</Text>
               </TouchableOpacity>
             </View>
             <View>
-              <TouchableOpacity style={styles.btnSocialAccountFacebook}>
+              <TouchableOpacity style={Styles.btnSocialAccountFacebook}>
                 <Image
                   source={require("../../../resources/images/FacebookIcon.png")}
                 />
-                <Text style={styles.labelSocial}>Facebook</Text>
+                <Text style={Styles.labelSocial}>Facebook</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -79,129 +94,5 @@ const LoginForm = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#FFFFFF",
-    borderTopRightRadius: 40,
-    borderTopLeftRadius: 40,
-  },
-  labelInicio: {
-    fontSize: 22,
-    fontFamily: "Dosis",
-    fontWeight: "500",
-    lineHeight: 28,
-    letterSpacing: 0.0015,
-    textAlign: "center",
-    color: "#003031",
-    marginTop: 24,
-    marginBottom: 32,
-  },
-  labelAccount: {
-    fontSize: 16,
-    fontWeight: "normal",
-    lineHeight: 19,
-    letterSpacing: 0.005,
-    textAlign: "center",
-    color: "#003031",
-  },
-  labelForgetPassword: {
-    fontSize: 16,
-    lineHeight: 19,
-    letterSpacing: 0.005,
-    textDecorationLine: "underline",
-    marginBottom: 32,
-  },
-  labelIngresa: {
-    textAlign: "center",
-    color: "#003031",
-    fontSize: 16,
-    fontWeight: "normal",
-    lineHeight: 19,
-    letterSpacing: 0.005,
-    marginLeft: 8,
-    marginBottom: 16,
-  },
-  labelLogin: {
-    color: "#FFFFFF",
-    fontSize: 15,
-    fontWeight: "bold",
-    lineHeight: 18,
-    letterSpacing: 0.00125,
-    textAlign: "center",
-    paddingVertical: 12,
-  },
-  labelSocial: {
-    fontSize: 15,
-    fontWeight: "bold",
-    lineHeight: 18,
-    letterSpacing: 0.00125,
-    textAlign: "center",
-    paddingVertical: 12,
-    paddingLeft: 5,
-  },
-  containerForm: {
-    marginRight: 15,
-    marginLeft: 17,
-  },
-  inputTextBox: {
-    height: 56,
-    borderColor: "#A1AAB2",
-    fontFamily: "Roboto",
-    borderRadius: 3.5,
-    paddingLeft: 15,
-    borderWidth: 1,
-    marginBottom: 29,
-  },
-  btnIniciar: {
-    backgroundColor: "#132A3E",
-    height: 42,
-    borderRadius: 25,
-    marginBottom: 24,
-  },
-  btnSocialAccountGoogle: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#A1AAB2",
-    paddingHorizontal: 50,
-    borderWidth: 1,
-    height: 42,
-    width: 170,
-    borderRadius: 25,
-  },
-  btnSocialAccountFacebook: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#A1AAB2",
-    paddingHorizontal: 45,
-    borderWidth: 1,
-    height: 42,
-    width: 170,
-    borderRadius: 25,
-    marginLeft: 16,
-  },
-  noCuenta: {
-    flexDirection: "row",
-    alignSelf: "center",
-    alignItems: "flex-end",
-    marginBottom: 32,
-  },
-  containerSocial: {
-    flexDirection: "row",
-    alignSelf: "center",
-    alignItems: "flex-end",
-    marginBottom: 32,
-  },
-  labelRegistrate: {
-    color: "#FEC800",
-    fontSize: 16,
-    fontWeight: "bold",
-    lineHeight: 19,
-    letterSpacing: 0.005,
-    marginLeft: 8,
-  },
-});
 
 export default LoginForm;

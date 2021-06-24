@@ -1,13 +1,12 @@
-import { ADD_NOTE, DELETE_NOTE } from "../types";
-const initialState = [];
-function notesReducer(state = initialState, action) {
+import { ADD_NOTE, DELETE_NOTE } from "../../types";
+
+export default (state, action) => {
   switch (action.type) {
     case ADD_NOTE:
       return [
         ...state,
         {
-          id: action.id,
-          note: action.note,
+          note: action.payload,
         },
       ];
 
@@ -20,6 +19,4 @@ function notesReducer(state = initialState, action) {
     default:
       return state;
   }
-}
-
-export default notesReducer;
+};

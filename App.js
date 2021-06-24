@@ -1,14 +1,18 @@
 import "react-native-gesture-handler";
 import React from "react";
 import AppNavigation from "./src/components/navigation/AppNavigation";
-import { Provider as StoreProvider } from "react-redux";
-import store from "./store";
+import AuthState from "./context/auth/authState";
+import ServiceState from "./context/service/serviceState";
 
 const App = () => {
   return (
-    <StoreProvider store={store}>
-      <AppNavigation />
-    </StoreProvider>
+    <>
+      <AuthState>
+        <ServiceState>
+          <AppNavigation />
+        </ServiceState>
+      </AuthState>
+    </>
   );
 };
 

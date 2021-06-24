@@ -1,197 +1,182 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
   Image,
   TextInput,
-  StyleSheet,
   TouchableHighlight,
   TouchableOpacity,
 } from "react-native";
+import Styles from "./styles";
+import AuthContext from "../../../../context/auth/authContext";
 
-export const RegistreForm1 = ({ setForm }) => {
+export const Footer = (props) => {
+  const { auth, message, signUp } = useContext(AuthContext);
+  const { setForm, formValue, title, data } = props;
+  console.log("data::Footer", data);
   const onPressNext = () => {
-    setForm(1);
+    if (formValue !== 4) {
+      setForm(formValue);
+    } else {
+      signUp(data);
+      if (auth) {
+        props.navigation.navigate("Home");
+      }
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.box, styles.box1]}>
-        <Text style={styles.labelTitle}>Ingresa los datos de tu cuenta</Text>
-        <TextInput
-          style={styles.inputTextBox}
-          placeholder="Correo electrónico"
-        />
-        <TextInput style={styles.inputTextBox} placeholder="Contraseña" />
-        <TextInput
-          style={styles.inputTextBox}
-          placeholder="Repetir contraseña"
-        />
-      </View>
-      <View style={[styles.box, styles.box2]}>
-        <TouchableHighlight style={styles.btnNext} onPress={onPressNext}>
-          <View>
-            <Text style={styles.labelNext}>Siguiente</Text>
-            <Image
-              source={require("../../../resources/images/arrowRightLine.png")}
-              style={styles.righLine}
-            />
-          </View>
-        </TouchableHighlight>
-        <View style={styles.breadcums}>
-          <Image source={require("../../../resources/images/Breadcums1.png")} />
+    <View style={[Styles.box, Styles.box2]}>
+      <TouchableHighlight style={Styles.btnNext} onPress={onPressNext}>
+        <View>
+          <Text style={Styles.labelNext}>{title}</Text>
+          <Image
+            source={require("../../../resources/images/arrowRightLine.png")}
+            style={Styles.righLine}
+          />
         </View>
+      </TouchableHighlight>
+      <View style={Styles.breadcums}>
+        <Image source={require("../../../resources/images/Breadcums1.png")} />
       </View>
     </View>
   );
 };
 
-export const RegistreForm2 = ({ setForm }) => {
-  const [gender, setGender] = useState(null);
-  const onPressNext = () => {
-    setForm(2);
-  };
-
+export const RegistreForm1 = ({ setForm, setData, data }) => {
   return (
-    <View style={styles.container}>
-      <View style={[styles.box, styles.box1]}>
-        <Text style={styles.labelTitle}>Selecciona tu género</Text>
-        <View style={styles.containerForm}>
-          <TouchableOpacity onPress={() => setGender("M")}>
-            <View style={styles.containerForm2}>
+    <View style={Styles.container}>
+      <View style={[Styles.box, Styles.box1]}>
+        <Text style={Styles.labelTitle}>Ingresa los datos de tu cuenta</Text>
+        <TextInput
+          style={Styles.inputTextBox}
+          placeholder="Correo electrónico"
+          onChangeText={(e) => setData({ ...data, email: e })}
+        />
+        <TextInput
+          style={Styles.inputTextBox}
+          placeholder="Contraseña"
+          onChangeText={(e) => setData({ ...data, password: e })}
+        />
+        <TextInput
+          style={Styles.inputTextBox}
+          placeholder="Repetir contraseña"
+          onChangeText={(e) => setData({ ...data, rePassword: e })}
+        />
+      </View>
+      <Footer formValue={1} title="Siguiente" setForm={setForm} />
+    </View>
+  );
+};
+
+export const RegistreForm2 = ({ setForm, setData, data }) => {
+  return (
+    <View style={Styles.container}>
+      <View style={[Styles.box, Styles.box1]}>
+        <Text style={Styles.labelTitle}>Selecciona tu género</Text>
+        <View style={Styles.containerForm}>
+          <TouchableOpacity onPress={() => setData({ ...data, gender: "M" })}>
+            <View style={Styles.containerForm2}>
               <Image
                 source={require("../../../resources/images/riWomenFill.png")}
-                style={styles.righLine3}
+                style={Styles.righLine3}
               />
-              <Text style={styles.labelItem}>Mujer</Text>
+              <Text style={Styles.labelItem}>Mujer</Text>
               <Image
                 source={
-                  gender === "M"
+                  data.gender === "M"
                     ? require("../../../resources/images/checkboxCircle.png")
                     : require("../../../resources/images/unCheckboxCircle.png")
                 }
-                style={styles.righLine2}
+                style={Styles.righLine2}
               />
             </View>
           </TouchableOpacity>
         </View>
-        <View style={styles.containerForm}>
-          <TouchableOpacity onPress={() => setGender("H")}>
-            <View style={styles.containerForm2}>
+        <View style={Styles.containerForm}>
+          <TouchableOpacity onPress={() => setData({ ...data, gender: "H" })}>
+            <View style={Styles.containerForm2}>
               <Image
                 source={require("../../../resources/images/riMenFill.png")}
-                style={styles.righLine3}
+                style={Styles.righLine3}
               />
-              <Text style={styles.labelItem}>Hombre</Text>
+              <Text style={Styles.labelItem}>Hombre</Text>
               <Image
                 source={
-                  gender === "H"
+                  data.gender === "H"
                     ? require("../../../resources/images/checkboxCircle.png")
                     : require("../../../resources/images/unCheckboxCircle.png")
                 }
-                style={styles.righLine2}
+                style={Styles.righLine2}
               />
             </View>
           </TouchableOpacity>
         </View>
-        <View style={styles.containerForm}>
-          <TouchableOpacity onPress={() => setGender("O")}>
-            <View style={styles.containerForm2}>
+        <View style={Styles.containerForm}>
+          <TouchableOpacity onPress={() => setData({ ...data, gender: "O" })}>
+            <View style={Styles.containerForm2}>
               <Image
                 source={require("../../../resources/images/riGenderlessFill.png")}
-                style={styles.righLine3}
+                style={Styles.righLine3}
               />
-              <Text style={styles.labelItem}>Otro</Text>
+              <Text style={Styles.labelItem}>Otro</Text>
               <Image
                 source={
-                  gender === "O"
+                  data.gender === "O"
                     ? require("../../../resources/images/checkboxCircle.png")
                     : require("../../../resources/images/unCheckboxCircle.png")
                 }
-                style={styles.righLine2}
+                style={Styles.righLine2}
               />
             </View>
           </TouchableOpacity>
         </View>
       </View>
-      <View style={[styles.box, styles.box2]}>
-        <TouchableHighlight style={styles.btnNext} onPress={onPressNext}>
-          <View>
-            <Text style={styles.labelNext}>Siguiente</Text>
-            <Image
-              source={require("../../../resources/images/arrowRightLine.png")}
-              style={styles.righLine}
-            />
-          </View>
-        </TouchableHighlight>
-        <View style={styles.breadcums}>
-          <Image source={require("../../../resources/images/Breadcums2.png")} />
-        </View>
-      </View>
+      <Footer formValue={2} title="Siguiente" setForm={setForm} />
     </View>
   );
 };
 
-export const RegistreForm3 = ({ setForm }) => {
-  const onPressNext = () => {
-    setForm(3);
-  };
-
+export const RegistreForm3 = ({ setForm, setData, data }) => {
   return (
-    <View style={styles.container}>
-      <View style={[styles.box, styles.box1]}>
-        <Text style={styles.labelTitle}>Ingresa tu fecha de nacimiento</Text>
+    <View style={Styles.container}>
+      <View style={[Styles.box, Styles.box1]}>
+        <Text style={Styles.labelTitle}>Ingresa tu fecha de nacimiento</Text>
       </View>
-      <View style={[styles.box, styles.box2]}>
-        <TouchableHighlight style={styles.btnNext} onPress={onPressNext}>
-          <View>
-            <Text style={styles.labelNext}>Siguiente</Text>
-            <Image
-              source={require("../../../resources/images/arrowRightLine.png")}
-              style={styles.righLine}
-            />
-          </View>
-        </TouchableHighlight>
-        <View style={styles.breadcums}>
-          <Image source={require("../../../resources/images/Breadcums3.png")} />
-        </View>
-      </View>
+      <Footer formValue={3} title="Siguiente" setForm={setForm} />
     </View>
   );
 };
 
 export const RegistreForm4 = (props) => {
-  const [value, setValue] = useState(null);
-  const onPressNext = () => {
-    props.navigation.navigate("Home");
-  };
-
+  const { setData, data } = props;
+  console.log("data::RegistreForm4", data);
   const onPressSi = () => {
-    setValue("Si");
+    setData({ ...data, oldMen: "Si" });
   };
 
   const onPressNo = () => {
-    setValue("No");
+    setData({ ...data, oldMen: "No" });
   };
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.box, styles.box1]}>
-        <Text style={styles.labelTitle1}>
+    <View style={Styles.container}>
+      <View style={[Styles.box, Styles.box1]}>
+        <Text style={Styles.labelTitle1}>
           ¿Te acompaña un dulto responsable?
         </Text>
-        <View style={styles.containerForm21}>
+        <View style={Styles.containerForm21}>
           <TouchableOpacity onPress={onPressSi}>
             <View
               style={[
-                styles.containerForm3,
-                value === "Si" && styles.containerForm31,
+                Styles.containerForm3,
+                data.oldMen === "Si" && Styles.containerForm31,
               ]}
             >
               <Text
                 style={[
-                  styles.labelItemYes,
-                  value === "Si" && styles.labelItemYes1,
+                  Styles.labelItemYes,
+                  data.oldMen === "Si" && Styles.labelItemYes1,
                 ]}
               >
                 Si
@@ -201,14 +186,14 @@ export const RegistreForm4 = (props) => {
           <TouchableOpacity onPress={onPressNo}>
             <View
               style={[
-                styles.containerForm4,
-                value === "No" && styles.containerForm41,
+                Styles.containerForm4,
+                data.oldMen === "No" && Styles.containerForm41,
               ]}
             >
               <Text
                 style={[
-                  styles.labelItemNo,
-                  value === "No" && styles.labelItemYes1,
+                  Styles.labelItemNo,
+                  data.oldMen === "No" && Styles.labelItemYes1,
                 ]}
               >
                 No
@@ -217,161 +202,7 @@ export const RegistreForm4 = (props) => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={[styles.box, styles.box2]}>
-        <TouchableHighlight style={styles.btnNext} onPress={onPressNext}>
-          <View>
-            <Text style={styles.labelNext}>Finalizar</Text>
-            <Image
-              source={require("../../../resources/images/arrowRightLine.png")}
-              style={styles.righLine}
-            />
-          </View>
-        </TouchableHighlight>
-        <View style={styles.breadcums}>
-          <Image source={require("../../../resources/images/Breadcums3.png")} />
-        </View>
-      </View>
+      <Footer {...props} formValue={4} title="Finalizar" data={data} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginRight: 15,
-    marginLeft: 17,
-  },
-  box: {
-    flex: 1,
-  },
-  box1: {
-    flex: 10,
-  },
-  //footer
-  box2: {
-    flex: 2,
-  },
-  labelTitle: {
-    marginTop: 40,
-    fontSize: 22,
-    fontWeight: "bold",
-    lineHeight: 28,
-    letterSpacing: 0.0015,
-    color: "#003031",
-    marginBottom: 32,
-  },
-  inputTextBox: {
-    height: 56,
-    borderColor: "#A1AAB2",
-    borderRadius: 3.5,
-    paddingLeft: 15,
-    borderWidth: 1,
-    marginBottom: 30,
-  },
-  btnNext: {
-    backgroundColor: "#132A3E",
-    height: 42,
-    borderRadius: 25,
-  },
-  labelNext: {
-    color: "#FFFFFF",
-    fontSize: 15,
-    fontWeight: "bold",
-    lineHeight: 18,
-    letterSpacing: 0.00125,
-    textAlign: "center",
-    paddingVertical: 12,
-    width: "100%",
-  },
-  righLine: {
-    position: "absolute",
-    top: 10,
-    left: 310,
-  },
-  breadcums: {
-    marginTop: 30,
-    alignSelf: "center",
-  },
-  containerForm: {
-    backgroundColor: "#E7EAEC",
-    marginBottom: 24,
-    paddingLeft: 52,
-    borderRadius: 8,
-    width: "100%",
-    justifyContent: "center",
-    height: 48,
-  },
-  containerForm2: {
-    flexDirection: "row",
-  },
-  righLine: {
-    position: "absolute",
-    top: 10,
-    left: 310,
-  },
-  righLine2: {
-    position: "absolute",
-    left: 270,
-  },
-  righLine3: {
-    position: "absolute",
-    right: 320,
-  },
-  containerForm21: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  containerForm3: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: 175,
-    height: 82,
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingRight: 16,
-    borderColor: "#00AAAD",
-  },
-  containerForm31: {
-    backgroundColor: "#00AAAD",
-  },
-  containerForm4: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: 175,
-    height: 82,
-    marginLeft: 12,
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingRight: 16,
-    borderColor: "#902857",
-  },
-  containerForm41: {
-    backgroundColor: "#902857",
-  },
-  labelTitle1: {
-    marginTop: 40,
-    fontSize: 20,
-    fontWeight: "bold",
-    lineHeight: 28,
-    letterSpacing: 0.00125,
-    color: "#003031",
-    marginBottom: 96,
-  },
-  labelItemYes: {
-    fontSize: 15,
-    fontWeight: "bold",
-    lineHeight: 18,
-    letterSpacing: 0.00125,
-    color: "#00AAAD",
-  },
-  labelItemYes1: {
-    color: "#FFFFFF",
-  },
-  labelItemNo: {
-    fontSize: 15,
-    fontWeight: "bold",
-    lineHeight: 18,
-    letterSpacing: 0.0015,
-    color: "#902857",
-  },
-});

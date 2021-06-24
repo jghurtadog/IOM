@@ -11,17 +11,37 @@ import Styles from "./styles";
 
 const Registre = (props) => {
   const [form, setForm] = useState(null);
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+    gender: "",
+    birdDate: "",
+    oldMen: "",
+  });
 
   const renderSwitch = (param) => {
     switch (param) {
       case 1:
-        return <RegistreForm2 setForm={setForm} />;
+        return (
+          <RegistreForm2 setForm={setForm} data={data} setData={setData} />
+        );
       case 2:
-        return <RegistreForm3 setForm={setForm} />;
+        return (
+          <RegistreForm3 setForm={setForm} data={data} setData={setData} />
+        );
       case 3:
-        return <RegistreForm4 {...props} setForm={setForm} />;
+        return (
+          <RegistreForm4
+            {...props}
+            setForm={setForm}
+            data={data}
+            setData={setData}
+          />
+        );
       default:
-        return <RegistreForm1 setForm={setForm} />;
+        return (
+          <RegistreForm1 setForm={setForm} data={data} setData={setData} />
+        );
     }
   };
 
