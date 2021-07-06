@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { ItemProfile } from "../global/_children/Card";
+import CardItemProfile from "./_children/CardItemProfile";
 import AuthContext from "../../../context/auth/authContext";
+import { metrics } from "../../utilities/Metrics";
 
 const Profile = (props) => {
   const { navigation } = props;
-  const { user,signOut } = useContext(AuthContext);
+  const { user, signOut } = useContext(AuthContext);
   const onPressBack = () => {
     navigation.goBack();
   };
@@ -29,14 +30,34 @@ const Profile = (props) => {
       </View>
       <View style={[styles.box, styles.box2]}>
         <View style={styles.container}>
-          <ItemProfile title="Correo electrónico" subTitle={user?user.email:''} />
-          <ItemProfile
+          <CardItemProfile
+            title="Correo electrónico"
+            subTitle={user ? user.email : ""}
+          />
+          <CardItemProfile
+            {...props}
             title="Fecha de nacimiento"
-            subTitle={user?user.birdDate:''}
+            field="birthdate"
+            subTitle={user ? user.birdDate : ""}
             showImge
           />
-          <ItemProfile title="Género" subTitle={user?user.gender=='H'?'Hombre':user.gender=='M'?'Mujer':'Otro':''} showImge />
-          <ItemProfile
+          <CardItemProfile
+            {...props}
+            title="Género"
+            field="genero"
+            subTitle={
+              user
+                ? user.gender == "H"
+                  ? "Hombre"
+                  : user.gender == "M"
+                  ? "Mujer"
+                  : "Otro"
+                : ""
+            }
+            showImge
+          />
+          <CardItemProfile
+            {...props}
             title="Contraseña"
             subTitle="****************"
             showImge
@@ -102,7 +123,7 @@ const styles = StyleSheet.create({
   },
   iconLeft: {
     position: "absolute",
-    right: 185,
+    right: metrics.WIDTH * 0.45,
   },
 });
 

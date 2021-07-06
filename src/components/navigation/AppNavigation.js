@@ -5,12 +5,16 @@ import Login from "../login";
 import Registre from "../registre";
 import Profile from "../profile";
 import Home from "../global/Home";
+import UpdateProfile from "../profile/_children/UpdateProfileForm";
 import DirectoryItem from "../directory/_children/DirectoryItem";
 import LinkItem from "../links/_children/LinkItem";
 import PointItem from "../settings/_children/PointItem";
+import PointNavigationApp from "../settings/_children/PointNavigationApp";
 import PointItemComents from "../settings/_children/PointItemComents";
 import FilterSetting from "../settings/_children/FilterSetting";
-
+/**
+ * Stack de navegacion, esta librería de React Navigation permite configurar la navegación del app
+ */
 const AppNavigation = createStackNavigator({
   Splash: {
     screen: Splash,
@@ -36,6 +40,12 @@ const AppNavigation = createStackNavigator({
       headerShown: false,
     },
   },
+  UpdateProfile: {
+    screen: UpdateProfile,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
   Home: {
     screen: Home,
     navigationOptions: {
@@ -56,6 +66,12 @@ const AppNavigation = createStackNavigator({
   },
   PointItem: {
     screen: PointItem,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  PointNavigationApp: {
+    screen: PointNavigationApp,
     navigationOptions: {
       headerShown: false,
     },

@@ -8,12 +8,12 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import ServiceContext from "../../../../context/service/serviceContext";
+import IOMContext from "../../../../context/iomData/iomContext";
 import ServiceItem from "./ServiceItem";
 import { capitalize } from "../../../utilities/helpers";
 
 const PointItem = (props) => {
-  const { dataItem, getDataServiceById } = useContext(ServiceContext);
+  const { dataItem, getDataPointById } = useContext(IOMContext);
   const onPressClose = () => {
     props.navigation.goBack();
   };
@@ -25,15 +25,31 @@ const PointItem = (props) => {
     Direccion = "",
     Departamento = "",
     Municipio = "",
+    Coordenadas = "",
     Servicios = [],
   } = dataItem || {};
 
+  console.log(Coordenadas);
+
   useEffect(() => {
-    getDataServiceById(id);
+    getDataPointById(id);
   }, [id]);
 
   const onPressOpenComents = () => {
     props.navigation.navigate("PointItemComents", { id, Nombre_punto });
+  };
+
+  const onPressOpenNavigationApps = () => {
+    let coor = Coordenadas.split(",");
+    let latitude = parseFloat(coor[0]);
+    let longitude = parseFloat(coor[1]);
+    props.navigation.navigate("PointNavigationApp", {
+      id,
+      Nombre_punto,
+      Direccion,
+      latitude,
+      longitude,
+    });
   };
 
   return (
@@ -60,7 +76,10 @@ const PointItem = (props) => {
           <View style={styles.box5}>
             <View style={styles.caja1}>
               <Text style={styles.caja1Text}>{Nombre_punto}</Text>
-              <TouchableOpacity style={styles.overlay}>
+              <TouchableOpacity
+                style={styles.overlay}
+                onPress={onPressOpenNavigationApps}
+              >
                 <Text style={styles.text}>¿Cómo llegar?</Text>
               </TouchableOpacity>
             </View>

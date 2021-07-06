@@ -8,28 +8,31 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { DatePicker } from "react-native-wheel-datepicker";
-import Styles from "./styles";
-
 import moment from "moment";
 import AuthContext from "../../../../context/auth/authContext";
-
+import Styles from "./styles";
+/**
+ * Componente Footer del registro, se llama la accion de signUp al terminar el registro
+ * @param {Object} this.props - objeto de propiedades heredados de la clase padre.
+ * @return {Object} <View /> Footer del registro.
+ */
 export const Footer = (props) => {
-  const { auth,user, message, signUp,updateUser } = useContext(AuthContext);
+  const { auth, user, message, signUp, updateUser } = useContext(AuthContext);
   const { setForm, formValue, title, data } = props;
   console.log("data::Footer", data);
   const onPressNext = () => {
     if (formValue !== 4) {
       setForm(formValue);
     } else {
-      signUp(data)
-      .then((user) => {
-        if(user){
+      signUp(data).then((user) => {
+        if (user) {
           updateUser(user);
           props.navigation.navigate("Home");
         }
       });
-      if (auth) {//nunca se llama, el useEffect predomina
-        console.log('hi');
+      if (auth) {
+        //nunca se llama, el useEffect predomina
+        console.log("hi");
         props.navigation.navigate("Home");
       }
     }
@@ -52,7 +55,15 @@ export const Footer = (props) => {
     </View>
   );
 };
-
+/**
+ * Componente del registro que captura el email y el password
+ * @param {Object} setForm - manejador que administra el formulario de manera dinamica
+ * @param {Object} setData - manejador del objeto (data)
+ * @param {Object} data - objeto del registro
+ * @param {string} data.email - propiedad email del registro
+ * @param {string} data.password - propiedad password del registro
+ * @return {Object} <View /> Formulario que captura la informacion.
+ */
 export const RegistreForm1 = ({ setForm, setData, data }) => {
   return (
     <View style={Styles.container}>
@@ -78,7 +89,14 @@ export const RegistreForm1 = ({ setForm, setData, data }) => {
     </View>
   );
 };
-
+/**
+ * Componente del registro que captura el genero
+ * @param {Object} setForm - manejador que administra el formulario de manera dinamica
+ * @param {Object} setData - manejador del objeto (data)
+ * @param {Object} data - objeto del registro
+ * @param {string} data.email - propiedad genero del usuario
+ * @return {Object} <View /> Formulario que captura la informacion.
+ */
 export const RegistreForm2 = ({ setForm, setData, data }) => {
   return (
     <View style={Styles.container}>
@@ -146,7 +164,14 @@ export const RegistreForm2 = ({ setForm, setData, data }) => {
     </View>
   );
 };
-
+/**
+ * Componente del registro que captura la fecha de nacimiento
+ * @param {Object} setForm - manejador que administra el formulario de manera dinamica
+ * @param {Object} setData - manejador del objeto (data)
+ * @param {Object} data - objeto del registro
+ * @param {string} data.birdDate - propiedad fecha de nacimiento del usuario
+ * @return {Object} <View /> Formulario que captura la informacion.
+ */
 export const RegistreForm3 = ({ setForm, setData, data }) => {
   return (
     <View style={Styles.container}>
@@ -159,7 +184,7 @@ export const RegistreForm3 = ({ setForm, setData, data }) => {
             maximumDate={moment().add(-16, "years").toDate()}
             minimumDate={moment().add(-120, "years").toDate()}
             onDateChange={(date) => {
-              console.log('date.',date,moment(date).format("YYYY-MM-DD"))
+              console.log("date.", date, moment(date).format("YYYY-MM-DD"));
               setData({ ...data, birdDate: moment(date).format("YYYY-MM-DD") });
             }}
             style={{ backgroundColor: "white" }}
@@ -170,7 +195,14 @@ export const RegistreForm3 = ({ setForm, setData, data }) => {
     </View>
   );
 };
-
+/**
+ * Componente del registro que captura informacion de acompañamiento de un adulto en caso de ser menor de edad
+ * @param {Object} setForm - manejador que administra el formulario de manera dinamica
+ * @param {Object} setData - manejador del objeto (data)
+ * @param {Object} data - objeto del registro
+ * @param {string} data.oldMen - propiedad de acompañamiento en caso de ser menor
+ * @return {Object} <View /> Formulario que captura la informacion.
+ */
 export const RegistreForm4 = (props) => {
   const { setData, data } = props;
   console.log("data::RegistreForm4", data);
