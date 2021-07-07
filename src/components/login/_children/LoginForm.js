@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import AuthContext from "../../../../context/auth/authContext";
+import { Snackbar } from "react-native-paper";
 import { validateEmail } from "../../../utilities/helpers";
 import Styles from "./styles";
 
@@ -16,7 +17,12 @@ const LoginForm = (props) => {
     email: "",
     password: "",
   });
-  const { auth, message, signIn, user: userData } = useContext(AuthContext);
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+  const [visible, setVisible] = React.useState(false);
+
+  const onDismissSnackBar = () => setVisible(false);
+  const { auth, message, signIn, getUser, user: userData } = useContext(AuthContext);
 
   const onPressRegistre = () => {
     props.navigation.navigate("Registre");
@@ -34,9 +40,25 @@ const LoginForm = (props) => {
   const { email, password } = user;
 
   const onPressLogin = () => {
+    var ok = true;
     if (!validateEmail(email)) {
-    } else {
-      signIn(user);
+      setErrorEmail("Correo electrónico invalido");
+      ok = false;
+    }
+    if (password === "") {
+      setErrorPassword("Contraseña invalida");
+      ok = false;
+    }
+
+    if (ok) {
+      signIn(user).then((uid) => {
+        if (uid) {
+          getUser(uid);
+        }
+      });
+      if (message !== null) {
+        setVisible(true);
+      }
     }
   };
 
@@ -45,18 +67,35 @@ const LoginForm = (props) => {
       <Text style={Styles.labelInicio}>Inicia sesión</Text>
       <View style={Styles.containerForm}>
         <TextInput
-          style={Styles.inputTextBox}
+          style={
+            errorEmail !== "" ? Styles.inputTextBoxError : Styles.inputTextBox
+          }
           placeholder="Correo electrónico"
-          onChangeText={(e) => setUser({ ...user, email: e })}
+          onChangeText={(e) => {
+            setUser({ ...user, email: e });
+            setErrorEmail("");
+            setErrorPassword("");
+          }}
         />
+        {errorEmail !== "" && (
+          <Text style={Styles.labelError}>{errorEmail}</Text>
+        )}
         <TextInput
-          style={Styles.inputTextBox}
+          style={
+            errorPassword !== ""
+              ? Styles.inputTextBoxError
+              : Styles.inputTextBox
+          }
           placeholder="Contraseña"
-          onChangeText={(e) => setUser({ ...user, password: e })}
+          onChangeText={(e) => {
+            setUser({ ...user, password: e });
+            setErrorPassword("");
+          }}
         />
-        <Text style={Styles.labelForgetPassword}>
-          ¿Olvidaste tu contraseña
-        </Text>
+        {errorPassword !== "" && (
+          <Text style={Styles.labelError}>{errorPassword}</Text>
+        )}
+        <Text style={Styles.labelForgetPassword}>¿Olvidaste tu contraseña</Text>
         <View>
           <TouchableHighlight style={Styles.btnIniciar} onPress={onPressLogin}>
             <Text style={Styles.labelLogin}>Iniciar sesión</Text>
@@ -88,6 +127,21 @@ const LoginForm = (props) => {
               </TouchableOpacity>
             </View>
           </View>
+        </View>
+        <View style={Styles.s}>
+          <Snackbar
+            visible={visible}
+            onDismiss={onDismissSnackBar}
+            duration={3000}
+            action={{
+              label: "X",
+              onPress: () => {
+                // Do something
+              },
+            }}
+          >
+            No existe usuario con estas credenciales
+          </Snackbar>
         </View>
       </View>
     </View>
