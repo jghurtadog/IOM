@@ -107,7 +107,7 @@ const LoginForm = (props) => {
             <Text style={Styles.labelRegistrate}>Regístrate</Text>
           </TouchableOpacity>
         </View>
-        <View>
+        {/*<View>
           <Text style={Styles.labelIngresa}>O ingresa con:</Text>
           <View style={Styles.containerSocial}>
             <View>
@@ -127,7 +127,7 @@ const LoginForm = (props) => {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </View>*/}
         <View style={Styles.s}>
           <Snackbar
             visible={visible}
