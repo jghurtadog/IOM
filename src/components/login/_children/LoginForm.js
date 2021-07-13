@@ -26,6 +26,7 @@ const LoginForm = (props) => {
     auth,
     message,
     signIn,
+    isSignIn,
     getUser,
     user: userData,
   } = useContext(AuthContext);
@@ -35,6 +36,11 @@ const LoginForm = (props) => {
   };
 
   useEffect(() => {
+    isSignIn().then((uid) => {
+      if (uid) {
+        getUser(uid);
+      }
+    });
     if (auth) {
       props.navigation.navigate("Home");
     }
@@ -92,6 +98,7 @@ const LoginForm = (props) => {
               ? Styles.inputTextBoxError
               : Styles.inputTextBox
           }
+          secureTextEntry={true}
           placeholder="Contraseña"
           onChangeText={(e) => {
             setUser({ ...user, password: e });
