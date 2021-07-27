@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -19,15 +19,17 @@ const LoginForm = (props) => {
   });
   const [errorEmail, setErrorEmail] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
+  const [visibleLogin, setVisibleLogin] = useState(false);
 
   const onDismissSnackBar = () => setVisible(false);
   const {
     auth,
     message,
+    config,
     signIn,
-    isSignIn,
     getUser,
+    getConfig,
     user: userData,
   } = useContext(AuthContext);
 
@@ -35,16 +37,14 @@ const LoginForm = (props) => {
     props.navigation.navigate("Registre");
   };
 
-  useEffect(() => {
-    isSignIn().then((uid) => {
-      if (uid) {
-        getUser(uid);
-      }
-    });
+  /*useEffect(() => {
     if (auth) {
       props.navigation.navigate("Home");
     }
-  }, [auth]);
+  }, [auth]);*/
+
+  console.log("user", userData);
+  console.log("visibleLogin", visibleLogin);
 
   const { email, password } = user;
 
