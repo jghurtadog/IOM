@@ -10,6 +10,7 @@ import {
   GET_DATA_ERROR,
   GET_DATA_DIRECTORY_ITEM,
   GET_DATA_POINT_ID,
+  GET_DATA_MAPEO_SERVICE
 } from "../../types";
 import IOMReducer from "./iomReducer";
 import IOMContext from "./iomContext";
@@ -26,6 +27,7 @@ const IOMState = (props) => {
     dataPointFilter: null,
     dataDirectory: null,
     dataDirectoryService: null,
+    dataMapeoService: [],
     dataFavorite: [
       { id: "348" },
       { id: "42" },
@@ -82,6 +84,23 @@ const IOMState = (props) => {
     }
   };
 
+  const getDataMapeoService = async () => {
+    try {
+      const value = await AsyncStorage.getItem("api-mapeo-servicios.json");
+      if (value !== null) {
+        dispatch({
+          type: GET_DATA_MAPEO_SERVICE,
+          payload: value,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: GET_DATA_ERROR,
+        payload: error,
+      });
+    }
+  };
+
   const getDataPointById = (id) => {
     dispatch({
       type: GET_DATA_POINT_ID,
@@ -108,12 +127,13 @@ const IOMState = (props) => {
     }
   };
 
-  const getDataPointFilter = (departamento, municipio, estado) => {
+  const getDataPointFilter = (departamento, municipio, estado, typeService) => {
     dispatch({
       type: GET_DATA_DIRECTORY_FILTER,
       departamento,
       municipio,
-      estado
+      estado,
+      typeService
     });
   }
 
@@ -183,6 +203,7 @@ const IOMState = (props) => {
         dataItem: state.dataItem,
         dataItemService: state.dataItemService,
         messageError: state.messageError,
+        dataMapeoService: state.dataMapeoService,
         getDataLink,
         getDataPoint,
         getDataDirectory,
@@ -190,7 +211,8 @@ const IOMState = (props) => {
         getDataPointById,
         getDataByDepartId,
         getDataDirectoryItemService,
-        getDataPointFilter
+        getDataPointFilter,
+        getDataMapeoService
       }}
     >
       {props.children}
