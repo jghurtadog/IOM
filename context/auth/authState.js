@@ -155,7 +155,6 @@ const AuthState = (props) => {
       .ref("/users/" + uid)
       .once("value", (snapshot) => {
         if (snapshot.hasChildren())
-        console.log('snapshot',snapshot.val())
           dispatch({
             type: UPDATED_USER,
             payload: snapshot.val(),
@@ -172,7 +171,6 @@ const AuthState = (props) => {
     auth()
       .signOut()
       .then(() => {
-        console.log("Signed Out");
         dispatch({
           type: SIGN_OUT,
         });
