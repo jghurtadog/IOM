@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useContext } from "react";
+import React, { useContext,useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,16 +8,31 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import { metrics } from "../../../utilities/Metrics";
+import AuthContext from "../../../../context/auth/authContext";
+import IOMContext from "../../../../context/iomData/iomContext";
 
 const PointItemComents = (props) => {
   const { id = "", Nombre_punto = "" } = props.navigation.state.params || {};
+  const { user } = useContext(AuthContext);
+  const { createUserComment } = useContext(IOMContext);
+  const [comment, setComment] = useState('');
 
   const onPressClose = () => {
     props.navigation.goBack();
   };
 
+  const onPressPublic = () => {
+    console.log('user.',user.uid,id);
+    if(comment.length>1)
+    createUserComment(user.uid,id,comment);
+    props.navigation.goBack();
+  };
+
   return (
     <View style={styles.wrapper}>
+      <View style={styles.statusBarBackground}>
+      </View>
       <View style={[styles.box, styles.box1]}>
         <View style={styles.boxImage}>
           <Image source={require("../../../resources/images/linkIcon.png")} />
@@ -31,7 +46,9 @@ const PointItemComents = (props) => {
           <Text style={styles.textTitle}>
             {Nombre_punto.substring(0, 18) + "..."}
           </Text>
-          <Text style={styles.textTitlePublicar}>Publicar</Text>
+          <TouchableOpacity onPress={onPressPublic}>
+            <Text style={styles.textTitlePublicar}>Publicar</Text>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={[styles.box, styles.box2]}>
@@ -41,7 +58,7 @@ const PointItemComents = (props) => {
               <Image
                 source={require("../../../resources/images/userIco.png")}
               />
-              <Text style={styles.textTitle2}>email.@email.com</Text>
+              <Text style={styles.textTitle2}>{user.email}</Text>
             </View>
             <Text style={styles.textTitle3}>
               Nos interesa conocer tus opiniones y experiencias para mejorar,
@@ -55,6 +72,7 @@ const PointItemComents = (props) => {
               numberOfLines={3}
               style={styles.inputTextBox}
               placeholder="Describe tu experiencia en este lugar"
+              onChangeText={(e) => setComment(e)}
             />
           </View>
         </View>
@@ -93,7 +111,7 @@ const styles = StyleSheet.create({
   textTitlePublicar: {
     fontSize: 15,
     fontWeight: "bold",
-    color: "#132A3E",
+    color: "#902857",
     lineHeight: 18,
     letterSpacing: 0.0125,
   },
@@ -205,9 +223,13 @@ const styles = StyleSheet.create({
   inputTextBox: {
     borderColor: "#A1AAB2",
     //fontFamily: "Roboto",
+    marginTop:metrics.HEIGHT*0.02,
     borderRadius: 3.5,
     paddingLeft: 15,
     borderWidth: 1,
+  },
+  statusBarBackground:{
+    height: (Platform.OS === 'ios') ? metrics.WIDTH * 0.06 : 0,
   },
 });
 

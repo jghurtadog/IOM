@@ -20,6 +20,7 @@ import Styles from "./styles";
 export const Footer = (props) => {
   const { auth, user, message, signUp, updateUser } = useContext(AuthContext);
   const { setForm, formValue, title, data, setError, error } = props;
+  console.log('formValue',formValue);
   const onPressNext = () => {
     if (formValue !== 4 && !error) {
       setForm(formValue);
@@ -49,7 +50,7 @@ export const Footer = (props) => {
         </View>
       </TouchableHighlight>
       <View style={Styles.breadcums}>
-        <Image source={require("../../../resources/images/Breadcums1.png")} />
+        <Image source={formValue == 2 ? require("../../../resources/images/Breadcums2.png"):require("../../../resources/images/Breadcums3.png")} />
       </View>
     </View>
   );
@@ -96,55 +97,75 @@ export const RegistreForm1 = ({ setForm, setData, data }) => {
     <View style={Styles.container}>
       <View style={[Styles.box, Styles.box1]}>
         <Text style={Styles.labelTitle}>Ingresa los datos de tu cuenta</Text>
-        <TextInput
-          style={
-            errorEmail !== "" ? Styles.inputTextBoxError : Styles.inputTextBox
-          }
-          placeholder="Correo electrónico"
-          onChangeText={(e) => {
-            setData({ ...data, email: e });
-            setErrorEmail("");
-            setErrorPassword("");
-            setErrorRePassword("");
-          }}
-        />
-        {errorEmail !== "" && (
-          <Text style={Styles.labelError}>{errorEmail}</Text>
-        )}
-        <TextInput
-          style={
-            errorPassword !== ""
-              ? Styles.inputTextBoxError
-              : Styles.inputTextBox
-          }
-          placeholder="Contraseña"
-          onChangeText={(e) => {
-            setData({ ...data, password: e });
-            setErrorEmail("");
-            setErrorPassword("");
-            setErrorRePassword("");
-          }}
-        />
-        {errorPassword !== "" && (
-          <Text style={Styles.labelError}>{errorPassword}</Text>
-        )}
-        <TextInput
-          style={
-            errorRePassword !== ""
-              ? Styles.inputTextBoxError
-              : Styles.inputTextBox
-          }
-          placeholder="Repetir contraseña"
-          onChangeText={(e) => {
-            setData({ ...data, rePassword: e });
-            setErrorEmail("");
-            setErrorPassword("");
-            setErrorRePassword("");
-          }}
-        />
-        {errorRePassword !== "" && (
-          <Text style={Styles.labelError}>{errorRePassword}</Text>
-        )}
+        <View style={Styles.SectionStyle}>
+          <Image
+            source={require('../../../resources/images/email.png')}
+            style={Styles.ImageStyle}
+          />
+          <TextInput
+            style={
+              errorEmail !== "" ? Styles.inputTextBoxError : Styles.inputTextBox
+            }
+            placeholder="Correo electrónico"
+            onChangeText={(e) => {
+              setData({ ...data, email: e });
+              setErrorEmail("");
+              setErrorPassword("");
+              setErrorRePassword("");
+            }}
+          />
+          {errorEmail !== "" && (
+            <Text style={Styles.labelError}>{errorEmail}</Text>
+          )}
+        </View>
+        <View style={Styles.SectionStyle}>
+          <Image
+            source={require('../../../resources/images/lock.png')}
+            style={Styles.ImageStyle2}
+          />
+          <TextInput
+            style={
+              errorPassword !== ""
+                ? Styles.inputTextBoxError
+                : Styles.inputTextBox
+            }
+            secureTextEntry={true}
+            placeholder="Contraseña"
+            onChangeText={(e) => {
+              setData({ ...data, password: e });
+              setErrorEmail("");
+              setErrorPassword("");
+              setErrorRePassword("");
+            }}
+          />
+          {errorPassword !== "" && (
+            <Text style={Styles.labelError}>{errorPassword}</Text>
+          )}
+        </View>
+        <View style={Styles.SectionStyle}>
+          <Image
+            source={require('../../../resources/images/lock.png')}
+            style={Styles.ImageStyle2}
+          />
+          <TextInput
+            style={
+              errorRePassword !== ""
+                ? Styles.inputTextBoxError
+                : Styles.inputTextBox
+            }
+            secureTextEntry={true}
+            placeholder="Repetir contraseña"
+            onChangeText={(e) => {
+              setData({ ...data, rePassword: e });
+              setErrorEmail("");
+              setErrorPassword("");
+              setErrorRePassword("");
+            }}
+          />
+          {errorRePassword !== "" && (
+            <Text style={Styles.labelError}>{errorRePassword}</Text>
+          )}
+        </View>
       </View>
       <View style={[Styles.box, Styles.box2]}>
         <TouchableHighlight style={Styles.btnNext} onPress={onPressNext}>
@@ -176,63 +197,63 @@ export const RegistreForm2 = ({ setForm, setData, data }) => {
     <View style={Styles.container}>
       <View style={[Styles.box, Styles.box1]}>
         <Text style={Styles.labelTitle}>Selecciona tu género</Text>
-        <View style={Styles.containerForm}>
-          <TouchableOpacity onPress={() => setData({ ...data, gender: "M" })}>
-            <View style={Styles.containerForm2}>
-              <Image
-                source={require("../../../resources/images/riWomenFill.png")}
-                style={Styles.righLine3}
-              />
-              <Text style={Styles.labelItem}>Mujer</Text>
-              <Image
-                source={
-                  data.gender === "M"
-                    ? require("../../../resources/images/checkboxCircle.png")
-                    : require("../../../resources/images/unCheckboxCircle.png")
+        <TouchableOpacity style={Styles.SectionStyle1} onPress={() => setData({ ...data, gender: "M" })}>
+          <View style={Styles.sectionGender}>
+            <Image
+              source={require("../../../resources/images/riWomenFill.png")}
+            />
+          </View>
+          <View style={Styles.sectionLabel}>
+            <Text style={Styles.labelItem}>Mujer</Text>
+          </View>
+          <View style={Styles.sectionSelect}>
+            <Image
+              source={
+                data.gender === "M"
+                  ? require("../../../resources/images/checkboxCircle.png")
+                  : require("../../../resources/images/unCheckboxCircle.png")
                 }
-                style={Styles.righLine2}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={Styles.containerForm}>
-          <TouchableOpacity onPress={() => setData({ ...data, gender: "H" })}>
-            <View style={Styles.containerForm2}>
-              <Image
-                source={require("../../../resources/images/riMenFill.png")}
-                style={Styles.righLine3}
-              />
-              <Text style={Styles.labelItem}>Hombre</Text>
-              <Image
-                source={
-                  data.gender === "H"
-                    ? require("../../../resources/images/checkboxCircle.png")
-                    : require("../../../resources/images/unCheckboxCircle.png")
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={Styles.SectionStyle1} onPress={() => setData({ ...data, gender: "H" })}>
+          <View style={Styles.sectionGender}>
+            <Image
+              source={require("../../../resources/images/riMenFill.png")}
+            />
+          </View>
+          <View style={Styles.sectionLabel}>
+            <Text style={Styles.labelItem}>Hombre</Text>
+          </View>
+          <View style={Styles.sectionSelect}>
+            <Image
+              source={
+                data.gender === "H"
+                  ? require("../../../resources/images/checkboxCircle.png")
+                  : require("../../../resources/images/unCheckboxCircle.png")
                 }
-                style={Styles.righLine2}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={Styles.containerForm}>
-          <TouchableOpacity onPress={() => setData({ ...data, gender: "O" })}>
-            <View style={Styles.containerForm2}>
-              <Image
-                source={require("../../../resources/images/riGenderlessFill.png")}
-                style={Styles.righLine3}
-              />
-              <Text style={Styles.labelItem}>Otro</Text>
-              <Image
-                source={
-                  data.gender === "O"
-                    ? require("../../../resources/images/checkboxCircle.png")
-                    : require("../../../resources/images/unCheckboxCircle.png")
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={Styles.SectionStyle1} onPress={() => setData({ ...data, gender: "O" })}>
+          <View style={Styles.sectionGender}>
+            <Image
+              source={require("../../../resources/images/riGenderlessFill.png")}
+            />
+          </View>
+          <View style={Styles.sectionLabel}>
+            <Text style={Styles.labelItem}>Otro</Text>
+          </View>
+          <View style={Styles.sectionSelect}>
+            <Image
+              source={
+                data.gender === "O"
+                  ? require("../../../resources/images/checkboxCircle.png")
+                  : require("../../../resources/images/unCheckboxCircle.png")
                 }
-                style={Styles.righLine2}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
+            />
+          </View>
+        </TouchableOpacity>
       </View>
       <Footer formValue={2} title="Siguiente" setForm={setForm} />
     </View>

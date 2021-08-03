@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { metrics } from "../../../utilities/Metrics";
 
 export default StyleSheet.create({
   container: {
@@ -6,9 +7,10 @@ export default StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
+    //marginTop:metrics.WIDTH*0.00,
   },
   containerForm: {
-    marginHorizontal: 16
+    marginHorizontal: 16,
   },
   s: {
     marginTop: 40,
@@ -37,6 +39,7 @@ export default StyleSheet.create({
     letterSpacing: 0.005,
     textDecorationLine: "underline",
     marginBottom: 32,
+    marginTop: 30,
   },
   labelIngresa: {
     textAlign: "center",
@@ -67,19 +70,15 @@ export default StyleSheet.create({
     paddingLeft: 5,
   },
   inputTextBox: {
-    height: 56,
+    flex:1,
     borderColor: "#A1AAB2",
-    borderRadius: 3.5,
-    paddingLeft: 15,
-    borderWidth: 1,
-    marginBottom: 29,
+    fontSize: 16,
   },
   inputTextBoxError: {
-    height: 56,
+    flex:1,
     borderColor: "#DD3338",
-    borderRadius: 3.5,
-    paddingLeft: 15,
     borderWidth: 1,
+    fontSize: 16,
   },
   labelError: {
     color: "#DD3338",
@@ -136,5 +135,29 @@ export default StyleSheet.create({
     lineHeight: 19,
     letterSpacing: 0.005,
     marginLeft: 8,
+  },
+  SectionStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#A1AAB2',
+    height: 56,
+    borderRadius: 5,
+    marginTop: 30,
+  },
+  ImageStyle: {
+      margin: 14,
+      height: 24,
+      width: 24,
+      resizeMode: 'stretch',
+      alignItems: 'center',
+  },
+  ImageStyle2: {
+      margin: 14,
+      height: 24,
+      width: 18,
+      resizeMode: 'stretch',
+      alignItems: 'center',
   },
 });

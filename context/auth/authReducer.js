@@ -6,7 +6,9 @@ import {
   SIGN_OUT,
   SIGN_OUT_ERROR,
   UPDATED_USER,
+  UPDATED_PASS,
   UPDATED_USER_INPUT_CHANGE,
+  UPDATED_PASS_INPUT_CHANGE,
   GET_CONFIG,
 } from "../../types";
 
@@ -28,6 +30,7 @@ export default (state, action) => {
         auth: true,
         message: null,
         user: action.payload,
+        pass: null,
       };
     case LOG_IN_ERROR:
       return {
@@ -35,6 +38,7 @@ export default (state, action) => {
         auth: null,
         user: null,
         message: action.payload,
+        pass: null,
       };
     case SIGN_UP:
       return {
@@ -42,6 +46,7 @@ export default (state, action) => {
         auth: true,
         user: action.payload.user,
         message: action.payload.response,
+        pass: null,
       };
     case SIGN_UP_ERROR:
       return {
@@ -49,6 +54,7 @@ export default (state, action) => {
         auth: null,
         user: null,
         message: action.payload,
+        pass: null,
       };
     case UPDATED_USER:
       return {
@@ -60,6 +66,7 @@ export default (state, action) => {
           gender: action.payload ? action.payload.gender : "O",
           oldMen: action.payload ? action.payload.oldMen : "",
         },
+        pass: null,
       };
     case UPDATED_USER_INPUT_CHANGE:
       return {
@@ -67,12 +74,25 @@ export default (state, action) => {
         auth: true,
         user: { ...state.user, [action.payload.field]: action.payload.value },
       };
+    case UPDATED_PASS_INPUT_CHANGE:
+      return {
+        ...state,
+        auth: true,
+        pass: { ...state.pass, [action.payload.field]: action.payload.value },
+      };
+    case UPDATED_PASS:
+      return {
+        ...state,
+        message: null,
+        pass: null,
+      };
     case SIGN_OUT:
       return {
         ...state,
         auth: null,
         user: null,
         message: null,
+        pass: null,
       };
     case SIGN_OUT_ERROR:
       return {
@@ -80,6 +100,7 @@ export default (state, action) => {
         auth: null,
         user: null,
         message: action.payload,
+        pass: null,
       };
     case GET_CONFIG:
       return {

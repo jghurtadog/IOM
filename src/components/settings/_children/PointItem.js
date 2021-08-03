@@ -10,11 +10,15 @@ import {
 } from "react-native";
 import HeaderItem from "../../global/_children/HeaderItem";
 import IOMContext from "../../../../context/iomData/iomContext";
+import authContext from "../../../../context/auth/authContext";
 import ServiceItem from "./ServiceItem";
 import { capitalize } from "../../../utilities/helpers";
+import { metrics } from "../../../utilities/Metrics";
+import _ from 'lodash';
 
 const PointItem = (props) => {
-  const { dataItem, getDataPointById } = useContext(IOMContext);
+  const { dataItem, getDataPointById,dataComments } = useContext(IOMContext);
+  const { user } = useContext(authContext);
   const { id = "" } = props.navigation.state.params || {};
 
   const {
@@ -30,7 +34,7 @@ const PointItem = (props) => {
   useEffect(() => {
     getDataPointById(id);
   }, [id]);
-
+  
   const onPressOpenComents = () => {
     props.navigation.navigate("PointItemComents", { id, Nombre_punto });
   };
@@ -117,6 +121,7 @@ const PointItem = (props) => {
                 {...props}
                 key={i}
                 Servicio={l.Servicio}
+                Servicio_id={l.Servicio_id}
                 Descripcion_Servicio={l.Descripcion_Servicio}
                 Organizacion_es={l.Organizacion_es}
               />
@@ -125,6 +130,23 @@ const PointItem = (props) => {
           <View style={styles.divider}></View>
           <View style={styles.box5}>
             <Text style={styles.textComentario}>Tus comentarios</Text>
+
+            {dataComments.filter(data => data.pointID === id).map(filtered => (
+              filtered.comments.map((l, i) => (
+                <View style={styles.cajaDireccion1} key={l.commentID}>
+                  <View style={styles.containerForm}>
+                    <Image
+                      source={require("../../../resources/images/userIco.png")}
+                    />
+                    <Text style={styles.textTitle2}>{user.email}</Text>
+                  </View>
+                  <Text style={styles.textTitle3}>{l.comment}</Text>
+                </View>
+              ))
+            ))}
+
+            
+
             <TouchableOpacity onPress={onPressOpenComents}>
               <Text style={styles.textAgregarComentario}>
                 Agregar comentario
@@ -153,8 +175,8 @@ const styles = StyleSheet.create({
     flex: 10,
   },
   box5: {
-    marginRight: 20,
-    marginLeft: 20,
+    marginRight: metrics.WIDTH*0.055,
+    marginLeft: metrics.WIDTH*0.055,
     marginBottom: 10,
   },
   divider: {
@@ -169,18 +191,18 @@ const styles = StyleSheet.create({
   },
   overlay: {
     height: 34,
-    width: 130,
+    width: metrics.WIDTH*0.3,
     backgroundColor: "#132A3E",
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
   },
   caja1Text: {
-    width: 220,
-    fontSize: 18,
+    width: metrics.WIDTH*0.61,
+    fontSize: metrics.HEIGHT*0.024,
     fontWeight: "bold",
     color: "#003031",
-    lineHeight: 23,
+    lineHeight: metrics.HEIGHT*0.033,
     letterSpacing: 0.0015,
     alignSelf: "stretch",
   },
@@ -209,6 +231,11 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     justifyContent: "center",
     alignItems: "center",
+    paddingVertical: 3,
+    paddingHorizontal: 3,
+    marginBottom: 10,
+  },
+  cajaDireccion1: {
     paddingVertical: 3,
     paddingHorizontal: 3,
     marginBottom: 10,
@@ -245,6 +272,15 @@ const styles = StyleSheet.create({
     marginStart: 10,
     marginTop: 20,
     marginBottom: 50,
+  },
+  textTitle3: {
+    fontSize: 14,
+    fontWeight: "normal",
+    lineHeight: 16,
+    letterSpacing: 0.0025,
+    color: "#A1AAB2",
+    marginTop: 2,
+    textAlign: "justify",
   },
 });
 
