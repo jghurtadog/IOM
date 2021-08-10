@@ -11,6 +11,7 @@ import {
   GET_DATA_DIRECTORY_ITEM,
   GET_DATA_MAPEO_SERVICE,
   GET_USER_COMMENTS,
+  NEW_FAVORITE,
 } from "../../types";
 
 export default (state, action) => {
@@ -41,7 +42,8 @@ export default (state, action) => {
         dataPointState: uniqueState,
         dataPointDepartamento: uniqueDepartamento,
         dataPointMunicipio: uniqueMunicipio,
-        dataItem: null,
+        /* Esto genera un error porque al guardar un punto la info se borra y es por esto, ya que al entrar primero a favoritos el redux de datapoint queda activo
+        dataItem: null        */
         messageError: null,
         //dataPointFilter: false,
       };
@@ -109,6 +111,11 @@ export default (state, action) => {
         messageError: action.payload,
         data: null,
         dataItem: null,
+      };
+    case NEW_FAVORITE:
+      return {
+        ...state,
+        dataFavorite: action.payload,
       };
     default:
       return state;

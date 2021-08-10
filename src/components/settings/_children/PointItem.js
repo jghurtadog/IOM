@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
   Image,
   View,
   TouchableOpacity,
-  ScrollView,
+  ScrollView
 } from "react-native";
 import HeaderItem from "../../global/_children/HeaderItem";
 import IOMContext from "../../../../context/iomData/iomContext";
@@ -14,9 +14,11 @@ import authContext from "../../../../context/auth/authContext";
 import ServiceItem from "./ServiceItem";
 import { capitalize } from "../../../utilities/helpers";
 import { metrics } from "../../../utilities/Metrics";
+import { Button, Menu, Provider } from 'react-native-paper';
 
 const PointItem = (props) => {
   const { dataItem, getDataPointById, dataComments } = useContext(IOMContext);
+  const [ visible, setVisible ] = useState(false);
   const { user } = useContext(authContext);
   const { id = "" } = props.navigation.state.params || {};
 
@@ -29,14 +31,35 @@ const PointItem = (props) => {
     Coordenadas = "",
     Servicios = [],
   } = dataItem || {};
-
   useEffect(() => {
     getDataPointById(id);
   }, [id]);
-
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
   const onPressOpenComents = () => {
     props.navigation.navigate("PointItemComents", { id, Nombre_punto });
   };
+
+  const onPressDotMenu = () => {
+    return (
+      <Provider>
+        <View
+          style={{
+            paddingTop: 50,
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <Menu
+            visible={visible}
+            onDismiss={() => setVisible(false)}
+            anchor={<Button onPress={openMenu}>Show menu</Button>}>
+            <Menu.Item onPress={() => {}} title="Item 1" />
+            <Menu.Item onPress={() => {}} title="Item 2" />
+          </Menu>
+        </View>
+      </Provider>
+    );
+   }
 
   const onPressOpenNavigationApps = () => {
     let coor = Coordenadas.split(",");
@@ -53,7 +76,7 @@ const PointItem = (props) => {
 
   return (
     <View style={styles.wrapper}>
-      <HeaderItem {...props} title="Información de punto" />
+      <HeaderItem {...props} title="Información de punto" id={id}/>
       <View style={[styles.box, styles.box2]}>
         <ScrollView style={{ flex: 1 }}>
           <View style={styles.divider}></View>
@@ -112,6 +135,9 @@ const PointItem = (props) => {
               <Text style={styles.textTitle2}>Sábado - Domingo: Cerrado</Text>
             </View>
           </View>
+
+          
+    
           <View style={styles.divider}></View>
           <View style={styles.box5}>
             <Text style={styles.textHorario}>Servicios</Text>
@@ -126,10 +152,9 @@ const PointItem = (props) => {
               />
             ))}
           </View>
-          <View style={styles.divider}></View>
+          <View style={styles.divider}></View>    
           <View style={styles.box5}>
             <Text style={styles.textComentario}>Tus comentarios</Text>
-
             {dataComments
               .filter((data) => data.pointID === id)
               .map((filtered) =>
@@ -140,6 +165,12 @@ const PointItem = (props) => {
                         source={require("../../../resources/images/userIco.png")}
                       />
                       <Text style={styles.textTitle2}>{user.email}</Text>
+                      <TouchableOpacity onPress={() => {
+                          //setVisible(true);
+                          onPressDotMenu();
+                        }} style={{position: 'absolute', right: 0}}>
+                        <Image source={require("../../../resources/images/riMoreLine.png")} />
+                      </TouchableOpacity>
                     </View>
                     <Text style={styles.textTitle3}>{l.comment}</Text>
                   </View>

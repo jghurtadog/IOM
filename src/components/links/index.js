@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
   //content
   box2: {
-    flex: (Platform.OS === 'ios') ? 8 : 10,
+    flex: Platform.OS === "ios" ? 8 : 10,
   },
   box3: {
     position: "absolute",
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 42,
     borderWidth: 1,
-    width: metrics.WIDTH*0.5,
+    width: metrics.WIDTH * 0.45,
     borderRadius: 25,
     borderColor: "#A1AAB2",
   },
