@@ -8,11 +8,13 @@ import IOMContext from "../../../context/iomData/iomContext";
 
 const Settings = (props) => {
   const [position, setPosition] = useState(null);
-  const { dataPoint, getDataPoint,getDataMapeoService } = useContext(IOMContext);
+  const { dataPoint, getDataPoint, dataMapeoService, getDataMapeoService } = useContext(IOMContext);
 
   useEffect(() => {
-    getDataPoint();
-    getDataMapeoService();
+    if(dataPoint && dataPoint.length < 1)
+      getDataPoint();
+    if(dataMapeoService && dataMapeoService.length < 1)
+      getDataMapeoService();
     Geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
@@ -41,7 +43,9 @@ const Settings = (props) => {
                 longitude: parseFloat(coor[1]),
               }}
               onPress={() => onPressOpenPoint(item.ID)}
-            ></Marker>
+            >
+            <Image source={require('./../../resources/images/ri-map-pin-fill.png')} style={{height: 35, width: 35 }} />
+            </Marker>
           );
         }
       });

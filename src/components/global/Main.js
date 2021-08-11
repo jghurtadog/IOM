@@ -8,7 +8,7 @@ const Main = (props) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../../resources/images/Background.png")}
+        //source={require("../../resources/images/Background.png")}
         style={styles.image}
       >
         <HeaderHome />
