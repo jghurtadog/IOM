@@ -43,7 +43,6 @@ const CardItemFavorite = (props) => {
     let index = services.findIndex(item => item.b64 == service.img_servicio_b64);
 
     if(service && index < 0){
-
       services.push({
         b64:service.img_servicio_b64,
         svg:<SvgCssUri
@@ -54,7 +53,6 @@ const CardItemFavorite = (props) => {
         />
       });
     }
-    //console.log('Nombre_punto',Nombre_punto,'Servicios',Servicios,'uniqueServices',unique,'services',services);
   });
 
   let _Nombre_punto = Nombre_punto.substring(0, 25);
@@ -63,7 +61,7 @@ const CardItemFavorite = (props) => {
     <TouchableOpacity key={id} style={styles.container} onPress={() => onPressOpenPoint(id)}>
       <View style={styles.containerFormTitle}>
         <Text style={styles.textTitle}>{_Nombre_punto + "..."}</Text>
-        <Image source={require("../../../resources/images/riMoreLine.png")} />
+        
       </View>
       <View style={styles.containerForm}>{_.map(services,(val) => {
         return val.svg
@@ -85,8 +83,7 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 12,
     marginHorizontal: 12,
-    borderBottomWidth: 3,
-    borderColor: "#E7EAEC",
+    
   },
   containerForm: {
     flexDirection: "row",
