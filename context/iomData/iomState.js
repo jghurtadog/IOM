@@ -14,6 +14,7 @@ import {
   GET_USER_COMMENTS,
   NEW_COMMENT,
   NEW_FAVORITE,
+  DELETE_COMMENT,
 } from "../../types";
 import moment from 'moment';
 import IOMReducer from "./iomReducer";
@@ -211,6 +212,15 @@ const IOMState = (props) => {
     );
   }
 
+  const deleteUserComment = (uid,id,key) => {
+    database().ref('/comments/'+uid+'/'+id+'/'+key).remove()
+    .then(()=> 
+      dispatch({
+        type: DELETE_COMMENT
+      })
+    );
+  }
+
   const createFavorite = async (point) => {
     try {
         var value = JSON.parse(await AsyncStorage.getItem("favorites"));
@@ -234,7 +244,9 @@ const IOMState = (props) => {
   };
 
   const deleteFavorite = async (point) => {
-    try {
+
+    AsyncStorage.removeItem('favorites')
+    /*try {
       const posts = await AsyncStorage.getItem('favorites');
       let postsFav = JSON.parse(posts);
 const postsItems = postsFav.filter(function(e){ return e.id !== point});
@@ -252,7 +264,7 @@ const postsItems = postsFav.filter(function(e){ return e.id !== point});
         type: GET_DATA_ERROR,
         payload: error,
       });
-    }
+    }*/
   };
 
   return (
@@ -285,7 +297,8 @@ const postsItems = postsFav.filter(function(e){ return e.id !== point});
         getUserComments,
         createUserComment,
         createFavorite,
-        deleteFavorite
+        deleteFavorite,
+        deleteUserComment
       }}
     >
       {props.children}
