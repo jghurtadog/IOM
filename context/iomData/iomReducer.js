@@ -10,6 +10,7 @@ import {
   GET_DATA_POINT_ID,
   GET_DATA_DIRECTORY_ITEM,
   GET_DATA_MAPEO_SERVICE,
+  GET_DATA_MAPEO_STATE,
   GET_USER_COMMENTS,
   NEW_FAVORITE,
   NEW_COMMENT,
@@ -52,41 +53,53 @@ export default (state, action) => {
       };
     case GET_DATA_DIRECTORY_FILTER:
 
-      const array = [];
-      state.dataPoint.map(element => {
-        var todos = false;
+      if (action.typeService.length > 0) {
 
-        element.Servicios.map(item => {
+        const array = [];
+        state.dataPoint.map(element => {
+          var todos = false;
 
-console.log("item.Servicio",item.Servicio);
-          action.typeService.map(service => {
-            console.log("service.item",service.item);
-            if (service.item === item.Servicio) {
-              todos = true;
-            }
+          element.Servicios.map(item => {
+
+
+            action.typeService.map(service => {
+
+              if (service.item === item.Servicio) {
+                todos = true;
+              }
+            })
+
           })
+          if (todos) {
+            array.push(element);
+          }
+
 
         })
-        if (todos) {
-          array.push(element);
-        }
 
-
-      })
+        return {
 
 
 
-      return {
+          ...state,
+          dataPointFilter: array
+            .filter((item) => item.Departamento.toLowerCase().includes(action.departamento.toLowerCase()))
+            .filter((item) => item.Municipio.toLowerCase().includes(action.municipio.toLowerCase()))
+            .filter((item) => item.Estado.toLowerCase().includes(action.estado.toLowerCase()))
 
-
+        };
+      }
+      else {
+     return {
 
         ...state,
-        dataPointFilter: array
+        dataPointFilter: state.dataPoint
           .filter((item) => item.Departamento.toLowerCase().includes(action.departamento.toLowerCase()))
           .filter((item) => item.Municipio.toLowerCase().includes(action.municipio.toLowerCase()))
           .filter((item) => item.Estado.toLowerCase().includes(action.estado.toLowerCase()))
-        //.filter((item) => item.Servicios.some((o) => o.Servicio.toLowerCase().includes(action.typeService.toLowerCase()))),
+          //.filter((item) => item.Servicios.some((o) => o.Servicio.toLowerCase().includes(action.typeService.toLowerCase()))),
       };
+    }
     case GET_DATA_POINT_ID:
       return {
         ...state,
@@ -116,6 +129,12 @@ console.log("item.Servicio",item.Servicio);
       return {
         ...state,
         dataMapeoService: JSON.parse(action.payload),
+        messageError: null,
+      };
+    case GET_DATA_MAPEO_STATE:
+      return {
+        ...state,
+        dataMapeoState: JSON.parse(action.payload),
         messageError: null,
       };
     case GET_DATA_DIRECTORY_SERVICE_ITEM:
