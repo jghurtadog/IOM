@@ -27,7 +27,6 @@ const LinkItem = (props) => {
   const regex = /(<([^>]+)>)/gi;
   const _resume = resume.replace(regex, "");
   const _content = content.replace(regex, "");
-  console.log('links::',links)
   return (
     <ScrollView style={styles.wrapper}>
       <TouchableOpacity style={styles.image} onPress={onPressClose}>
@@ -51,7 +50,6 @@ const LinkItem = (props) => {
             const link = val.indexOf('enlace:');
             const url = val.substring(link+7,val.length)
             const desc = val.substring(7,link-1)
-            console.log('val',val,link,val.length,url,desc)
             return <TouchableOpacity
                 key={id}
                 style={styles.boxOpenLink}

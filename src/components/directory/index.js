@@ -15,7 +15,6 @@ const Directory = (props) => {
   useEffect(() => {
     getDataDirectory(searchTerm);
   }, [searchTerm]);
-
   return (
     <View style={styles.wrapper}>
       <View style={[styles.box, styles.box1]}>
@@ -34,7 +33,7 @@ const Directory = (props) => {
           <FlatList
             data={dataDirectory}
             renderItem={(item) => (
-              <CardItemDirectory {...props} title={item.item.departamento} />
+              <CardItemDirectory {...props} title={item.item.departamento} icon={item.item.icon} />
             )}
             keyExtractor={(item) => item.departamento_id}
           />
